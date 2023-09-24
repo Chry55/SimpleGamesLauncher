@@ -1,4 +1,5 @@
-import os, ctypes, re
+import os, re
+#import ctypes
 from tkinter import *
 from tkinter import simpledialog
 
@@ -7,8 +8,8 @@ window.geometry("600x800+400+50")
 window.title("Giochi Steam - GamesLauncher")
 window.resizable(False, False)
 window.iconbitmap(default="Games.ico")
-myappid = 'Chry55Player.GamesLauncher.py.1.0' # arbitrary string
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+#myappid = 'Chry55Player.GamesLauncher.py.1.0' # arbitrary string
+#ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 def mousewheelevent(event):
     cTableContainer.yview_scroll(int(-2*(event.delta/120)), "units")
@@ -36,14 +37,19 @@ def createScrollableContainer():
 
 def launchOthers():
     os.system(OtherGames[i])
+    exit()
 def launchGC():
     os.system(GCGames[i])
+    exit()
 def launchWii():
     os.system(WiiGames[i])
+    exit()
 def launchU():
     os.system(UGames[i])
+    exit()
 def launchSwitch():
     os.system(SwitchGames[i])
+    exit()
 
 with open('SteamGames.txt') as f:
     SteamGames=f.readlines()
@@ -270,6 +276,7 @@ t1.place(x=274, y=55)
 
 def launch():
     os.system(SteamGames[i])
+    exit()
 l=2
 for i in range(0, len(SteamGames), 2):
     v = "l" + str(l)

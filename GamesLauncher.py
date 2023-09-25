@@ -245,8 +245,8 @@ def add():
             list=f.readlines()
             list.append(exe)
             list.append(title)
-            f.write(list[-1]+"\n")
             f.write(list[-2]+"\n")
+            f.write(list[-1]+"\n")
             for i in range(len(list)):
                 list[i]=list[i].replace("\n", "")
     except:

@@ -1,4 +1,4 @@
-import os, re
+import os, re, subprocess
 #import ctypes
 from tkinter import *
 from tkinter import simpledialog
@@ -7,7 +7,7 @@ window = Tk()
 window.geometry("600x800+400+50")
 window.title("Giochi Steam - GamesLauncher")
 window.resizable(False, False)
-window.iconbitmap(default="Games.ico")
+#window.iconbitmap(default="Games.ico")
 #myappid = 'Chry55Player.GamesLauncher.py.1.0' # arbitrary string
 #ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
@@ -35,58 +35,26 @@ def createScrollableContainer():
     cTableContainer.create_window(0, 0, window=fTable, anchor=NW)
     cTableContainer.bind_all("<MouseWheel>", mousewheelevent)
 
-def launchOthers():
-    os.system(OtherGames[i])
-    exit()
-def launchGC():
-    os.system(GCGames[i])
-    exit()
-def launchWii():
-    os.system(WiiGames[i])
-    exit()
-def launchU():
-    os.system(UGames[i])
-    exit()
-def launchSwitch():
-    os.system(SwitchGames[i])
-    exit()
-
-with open('SteamGames.txt') as f:
-    SteamGames=f.readlines()
-    for i in range(len(SteamGames)):
-        SteamGames[i]=SteamGames[i].replace("\n", "")
-with open('OtherGames.txt') as f:
-    OtherGames=f.readlines()
-    for i in range(len(OtherGames)):
-        OtherGames[i]=OtherGames[i].replace("\n", "")
-with open('GCGames.txt') as f:
-    GCGames=f.readlines()
-    for i in range(len(GCGames)):
-        GCGames[i]=GCGames[i].replace("\n", "")
-with open('WiiGames.txt') as f:
-    WiiGames=f.readlines()
-    for i in range(len(WiiGames)):
-        WiiGames[i]=WiiGames[i].replace("\n", "")
-with open('UGames.txt') as f:
-    UGames=f.readlines()
-    for i in range(len(UGames)):
-        UGames[i]=UGames[i].replace("\n", "")
-with open('SwitchGames.txt') as f:
-    SwitchGames=f.readlines()
-    for i in range(len(SwitchGames)):
-        SwitchGames[i]=SwitchGames[i].replace("\n", "")
-
 def steam():
+    with open('src/steam.txt', encoding="utf-8") as f:
+        SteamGames=f.readlines()
+        for i in range(len(SteamGames)):
+            SteamGames[i]=SteamGames[i].replace("\n", "")
+    with open('src/steam_bin.txt', encoding="utf-8") as f:
+        SteamBin=f.readlines()
+        for i in range(len(SteamBin)):
+            SteamBin[i]=SteamBin[i].replace("\n", "")
     window.title("Giochi Steam - GamesLauncher")
     cTableContainer.yview_moveto(0)
     l=2
-    for i in range(0, len(SteamGames), 2):
+    for i in range(0, len(SteamGames)):
         v = "l" + str(l)
         try:
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=SteamGames[i+1], font=("Arial", 12), background="black", fg="white", command=launch, bd=0)
+        la = lambda launch=SteamBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=SteamGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -100,16 +68,20 @@ def steam():
     updateScrollRegion()
 
 def others():
-    window.title("Giochi vari - GamesLauncher")
+    with open('src/o.txt') as f:
+        OtherGames=f.readlines()
+    with open('src/o_bin.txt') as f:
+        OBin=f.readlines()
+    window.title("Giochi Vari - GamesLauncher")
     cTableContainer.yview_moveto(0)
     l=2
-    for i in range(0, len(OtherGames), 2):
+    for i in range(0, len(OtherGames)):
         v = "l" + str(l)
         try:
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=OtherGames[i+1], font=("Arial", 12), background="black", fg="white", command=launchOthers, bd=0)
+        globals()[v] = Button(fTable, text=OtherGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(OBin[i]), bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -123,16 +95,20 @@ def others():
     updateScrollRegion()
 
 def gc():
+    with open('src/gc.txt') as f:
+        GCGames=f.readlines()
+    with open('src/gc_bin.txt') as f:
+        GCBin=f.readlines()
     window.title("Giochi GameCube - GamesLauncher")
     cTableContainer.yview_moveto(0)
     l=2
-    for i in range(0, len(GCGames), 2):
+    for i in range(0, len(GCGames)):
         v = "l" + str(l)
         try:
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=GCGames[i+1], font=("Arial", 12), background="black", fg="white", command=launchGC, bd=0)
+        globals()[v] = Button(fTable, text=GCGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(GCBin[i]), bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -145,40 +121,21 @@ def gc():
         pass
     updateScrollRegion()
 
-def wii():
-    window.title("Giochi Wii - GamesLauncher")
-    cTableContainer.yview_moveto(0)
-    l=2
-    for i in range(0, len(WiiGames), 2):
-        v = "l" + str(l)
-        try:
-            globals()[v].grid_forget()
-        except:
-            pass
-        globals()[v] = Button(fTable, text=WiiGames[i+1], font=("Arial", 12), background="black", fg="white", command=launchWii, bd=0)
-        globals()[v].grid(row=l, sticky=W)
-        l+=1
-    try:
-        for i in range(l, 100):
-            v = "l" + str(l)
-            globals()[v]['text']=""
-            globals()[v].grid_forget()
-            l+=1
-    except:
-        pass
-    updateScrollRegion()
-
-def u():
+def wiiu():
+    with open('src/u.txt') as f:
+        UGames=f.readlines()
+    with open('src/u_bin.txt') as f:
+        UBin=f.readlines()
     window.title("Giochi Wii U - GamesLauncher")
     cTableContainer.yview_moveto(0)
     l=2
-    for i in range(0, len(UGames), 2):
+    for i in range(0, len(UGames)):
         v = "l" + str(l)
         try:
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=UGames[i+1], font=("Arial", 12), background="black", fg="white", command=launchU, bd=0)
+        globals()[v] = Button(fTable, text=UGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(UBin[i]), bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -192,16 +149,47 @@ def u():
     updateScrollRegion()
 
 def switch():
+    with open('src/switch.txt') as f:
+        SwitchGames=f.readlines()
+    with open('src/switch_bin.txt') as f:
+        SwitchBin=f.readlines()
     window.title("Giochi Switch - GamesLauncher")
     cTableContainer.yview_moveto(0)
     l=2
-    for i in range(0, len(SwitchGames), 2):
+    for i in range(0, len(SwitchGames)):
         v = "l" + str(l)
         try:
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=SwitchGames[i+1], font=("Arial", 12), background="black", fg="white", command=launchSwitch, bd=0)
+        globals()[v] = Button(fTable, text=SwitchGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(SwitchBin[i]), bd=0)
+        globals()[v].grid(row=l, sticky=W)
+        l+=1
+    try:
+        for i in range(l, 100):
+            v = "l" + str(l)
+            globals()[v]['text']=""
+            globals()[v].grid_forget()
+            l+=1
+    except:
+        pass
+    updateScrollRegion()
+
+def wii():
+    with open('src/wii.txt') as f:
+        WiiGames=f.readlines()
+    with open('src/wii_bin.txt') as f:
+        WiiBin=f.readlines()
+    window.title("Giochi Wii - GamesLauncher")
+    cTableContainer.yview_moveto(0)
+    l=2
+    for i in range(0, len(WiiGames)):
+        v = "l" + str(l)
+        try:
+            globals()[v].grid_forget()
+        except:
+            pass
+        globals()[v] = Button(fTable, text=WiiGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(WiiBin[i]), bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -216,39 +204,42 @@ def switch():
 
 l1 = Label(fTable, text="                                          ", font=("Arial", 46), background="black", fg="white").grid(row=1, sticky=W)
 
-i1 = PhotoImage(file="steam-logo-white.png", width="50", height="50")
+i1 = PhotoImage(file="src/steam-logo-white.png", width="50", height="50")
 img1 = Button(window, image=i1, background="black", command=steam).place(x=0, y=0)
 
-i2 = PhotoImage(file="joystick.png", width="50", height="50")
+i2 = PhotoImage(file="src/joystick.png", width="50", height="50")
 img2 = Button(window, image=i2, background="black", command=others).place(x=55, y=0)
 
-i3 = PhotoImage(file="gamecube.png", width="50", height="50")
+i3 = PhotoImage(file="src/gamecube.png", width="50", height="50")
 img3 = Button(window, image=i3, background="black", command=gc).place(x=110, y=0)
 
-i4 = PhotoImage(file="wii.png", width="50", height="50")
+i4 = PhotoImage(file="src/wii.png", width="50", height="50")
 img4 = Button(window, image=i4, background="black", command=wii).place(x=165, y=0)
 
-i5 = PhotoImage(file="wiiu.png", width="50", height="50")
-img5 = Button(window, image=i5, background="black", command=u).place(x=220, y=0)
+i5 = PhotoImage(file="src/wiiu.png", width="50", height="50")
+img5 = Button(window, image=i5, background="black", command=wiiu).place(x=220, y=0)
 
-i6 = PhotoImage(file="switch.png", width="50", height="50")
+i6 = PhotoImage(file="src/switch.png", width="50", height="50")
 img6 = Button(window, image=i6, background="black", command=switch).place(x=275, y=0)
 
 def add():
-    title = simpledialog.askstring(title="Add", prompt="Enter game name:", parent=window, )
-    exe = simpledialog.askstring(title="Add", prompt="Enter game executable:", parent=window)
+    title = simpledialog.askstring(title="Add", prompt="Enter game name:", parent=window)
+    bin = simpledialog.askstring(title="Add", prompt="Enter game executable:", parent=window)
     type = simpledialog.askstring(title="Add", prompt="Enter game category:", parent=window)
     try:
-        type = type + "Games"
-        type=type.title()
-        with open(type+'.txt', mode="r+") as f:
+        with open("src/"+type+'.txt', mode="r+") as f:
             list=f.readlines()
-            list.append(exe)
             list.append(title)
-            f.write(list[-2]+"\n")
-            f.write(list[-1]+"\n")
             for i in range(len(list)):
                 list[i]=list[i].replace("\n", "")
+            f.write(list[-1]+"\n")
+        with open("src/"+type+'_bin.txt', mode="r+") as f:
+            list=f.readlines()
+            list.append(bin)
+            for i in range(len(list)):
+                list[i]=list[i].replace("\n", "")
+            f.write(list[-1]+"\n")
+
     except:
         pass
 img7 = Button(window, text="+", background="black", fg="white", font=("Arial", 25), command=add, bd=0).place(x=535, y=0)
@@ -273,17 +264,7 @@ t = Entry(window, background="black", fg="white", width=30, font=("Arial", 12))
 t.place(x=0, y=55)
 t1 = Button(window, text="Cerca", font=("Arial", 12), background="black", fg="white", command=Search)
 t1.place(x=274, y=55)
-
-def launch():
-    os.system(SteamGames[i])
-    exit()
-l=2
-for i in range(0, len(SteamGames), 2):
-    v = "l" + str(l)
-    globals()[v] = Button(fTable, text=SteamGames[i+1], font=("Arial", 12), background="black", fg="white", command=launch, bd=0)
-    globals()[v].grid(row=l, sticky=W)
-    l+=1
-
+steam()
 updateScrollRegion()
 
 createScrollableContainer()

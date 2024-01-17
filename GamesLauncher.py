@@ -81,7 +81,8 @@ def others():
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=OtherGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(OBin[i]), bd=0)
+        la = lambda launch=OBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=OtherGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -108,7 +109,8 @@ def gc():
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=GCGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(GCBin[i]), bd=0)
+        la = lambda launch=GCBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=GCGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -135,7 +137,8 @@ def wiiu():
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=UGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(UBin[i]), bd=0)
+        la = lambda launch=UBinBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=UGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -162,7 +165,8 @@ def switch():
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=SwitchGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(SwitchBin[i]), bd=0)
+        la = lambda launch=SwitchBinBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=SwitchGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
@@ -189,7 +193,8 @@ def wii():
             globals()[v].grid_forget()
         except:
             pass
-        globals()[v] = Button(fTable, text=WiiGames[i], font=("Arial", 12), background="black", fg="white", command=os.system(WiiBin[i]), bd=0)
+        la = lambda launch=WiiBinBin[i]: os.system(launch)
+        globals()[v] = Button(fTable, text=WiiGames[i], font=("Arial", 12), background="black", fg="white", command=la, bd=0)
         globals()[v].grid(row=l, sticky=W)
         l+=1
     try:
